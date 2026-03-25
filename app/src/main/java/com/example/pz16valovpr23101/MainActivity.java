@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class MainActivity extends AppCompatActivity {
 
     EditText etText;
+    EditText etText2;
     SharedPreferences sPref;
     private static final String SAVED_TEXT = "saved_text";
     @Override
@@ -28,19 +29,32 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         etText = findViewById(R.id.planetxt);
+        etText2 = findViewById(R.id.planetxt2);
+        sPref = getPreferences(MODE_PRIVATE);
+        String savedText1 = sPref.getString("text1", "");
+        String savedText2 = sPref.getString("text2", "");
+        etText.setText(savedText1);
+        etText2.setText(savedText2);
     }
     public void saveText(View view) {
         sPref = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
-        ed.putString(SAVED_TEXT, etText.getText().toString());
+        ed.putString("text2", etText.getText().toString());
         ed.commit();
         Toast.makeText(this, "Text saved", Toast.LENGTH_SHORT).show();
     }
     public void loadText(View view) {
         sPref = getPreferences(MODE_PRIVATE);
-        String savedText = sPref.getString(SAVED_TEXT, "");
-        etText.setText(savedText);
+        String savedText = sPref.getString("text2", "");
+        etText2.setText(savedText);
         Toast.makeText(this, "Text loaded", Toast.LENGTH_SHORT).show();
     }
-
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        sPref = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor ed = sPref.edit();
+        ed.putString("text1", etText.getText().toString());
+        ed.commit();
+    }
 }
