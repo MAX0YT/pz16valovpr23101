@@ -50,11 +50,12 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Text loaded", Toast.LENGTH_SHORT).show();
     }
     @Override
-    protected void onDestroy(){
-        super.onDestroy();
+    protected void onPause(){
+        super.onPause();
         sPref = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
         ed.putString("text1", etText.getText().toString());
+        Toast.makeText(this, "Text 1 saved", Toast.LENGTH_SHORT).show();
         ed.commit();
     }
 }
